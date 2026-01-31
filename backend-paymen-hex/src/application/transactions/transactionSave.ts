@@ -47,18 +47,24 @@ export class TransactionsSave {
     }
 
     async validateCard(payloadOfCard: Payload): Promise<ResponseTransactionsCard> {
+        console.log('#1');
         const product = await this.productRepository.findOne(payloadOfCard.idPrroduct);
         if (!product) throw new Error('Producto agotado');
-
+        console.log('#2');
         const card = await this.repository.validateCard(payloadOfCard);
+        console.log('#3');
+        
         const tx = await this.repository.transactions({
             amount: payloadOfCard.amount,
             idTransaction: payloadOfCard.idTransaction,
             customer_email: card.customer_email,
             payment_source_id: card.id,
         });
+        console.log('#4');
         await new Promise(resolve => setTimeout(resolve, 2000));
+        console.log('#5');
         const validPay = await this.repository.validatePayment(tx.id);
+        console.log('#6', validPay);
         if (validPay.data.status == 'APPROVED') {
             console.log('averd', validPay);
             await this.repository.updateTransaction(payloadOfCard.idTransaction, validPay.data.status, tx.id);
