@@ -57,14 +57,17 @@ export class TransactionsSave {
             customer_email: card.customer_email,
             payment_source_id: card.id,
         });
+        await new Promise(resolve => setTimeout(resolve, 2000));
         const validPay = await this.repository.validatePayment(tx.id);
-        console.log('averd', validPay);
-        await this.repository.updateTransaction(payloadOfCard.idTransaction, validPay.data.status, tx.id);
-        console.log('aqui anda pros', product);
-        await this.productRepository.decrementStock(
-            product.id,
-            this.stockDecrement,
-        );
+        if (validPay.data.status == 'APPROVED') {
+            console.log('averd', validPay);
+            await this.repository.updateTransaction(payloadOfCard.idTransaction, validPay.data.status, tx.id);
+            console.log('aqui anda pros', product);
+            await this.productRepository.decrementStock(
+                product.id,
+                this.stockDecrement,
+            );
+        }
         return validPay.data;
     }
 
