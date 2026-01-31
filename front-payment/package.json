@@ -8,9 +8,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "deploy": "npm run build && aws s3 sync ./dist s3://paycard0202"
   },
   "dependencies": {
+    "aws": "^0.0.3-2",
     "vue": "^3.5.26",
     "vue-router": "^4.4.5",
     "vuex": "^4.1.0"

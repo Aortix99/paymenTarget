@@ -8,7 +8,7 @@
         class="product-card__img"
         @error="onImageError(product.id)"
       />
-      <span v-else class="product-card__placeholder">sin imagen</span>
+      <span v-else class="product-card__placeholder">No hay productos</span>
     </div>
     <h2 class="product-card__title">{{ product.name }}</h2>
     <p class="product-card__description">{{ product.description }}</p>
