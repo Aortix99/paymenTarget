@@ -1,0 +1,24 @@
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-header__back {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  margin-bottom: 0.5rem;
+}
+
+.page-header__back:hover {
+  text-decoration: underline;
+}
+
+.page-header__title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+}

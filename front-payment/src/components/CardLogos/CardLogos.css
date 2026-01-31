@@ -1,0 +1,28 @@
+.card-logos {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-logos__item {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+}
+
+.card-logos__item--visa {
+  background: #797ff3;
+  color: #fff;
+}
+
+.card-logos__item--mastercard {
+  background: #ff8b1e;
+  color: #fff;
+}
+
+.card-logos__item--active {
+  opacity: 1;
+}

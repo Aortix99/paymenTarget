@@ -1,0 +1,80 @@
+.backdrop-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.backdrop-modal__content {
+  width: 100%;
+  max-width: 28rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  background: var(--surface);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.backdrop-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.backdrop-modal__title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.backdrop-modal__close {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.backdrop-modal__close:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.backdrop-modal__body {
+  padding: 1.25rem;
+}
+
+.backdrop-modal-enter-active,
+.backdrop-modal-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.backdrop-modal-enter-from,
+.backdrop-modal-leave-to {
+  opacity: 0;
+}
+
+.backdrop-modal-enter-active .backdrop-modal__content,
+.backdrop-modal-leave-active .backdrop-modal__content {
+  transition: transform 0.2s ease;
+}
+
+.backdrop-modal-enter-from .backdrop-modal__content,
+.backdrop-modal-leave-to .backdrop-modal__content {
+  transform: scale(0.95);
+}

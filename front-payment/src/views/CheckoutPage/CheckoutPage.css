@@ -1,0 +1,32 @@
+.checkout-page {
+  min-height: 100vh;
+  padding: 1rem;
+  padding-bottom: 2rem;
+}
+
+.checkout-page__container {
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.checkout-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.checkout-page__submit {
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  background: var(--primary);
+  color: white;
+}
+
+.checkout-page__submit:hover {
+  background: var(--primary-dark);
+}

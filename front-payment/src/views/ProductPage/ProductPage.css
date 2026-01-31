@@ -1,0 +1,24 @@
+.product-page {
+  min-height: 100vh;
+  padding: 1.25rem;
+}
+
+.product-page__list {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.product-page__loading,
+.product-page__error,
+.product-page__empty {
+  text-align: center;
+  max-width: 28rem;
+  margin: 0 auto 1rem;
+  color: var(--text-muted);
+}
+
+.product-page__error {
+  color: var(--error);
+}

@@ -1,0 +1,2 @@
+export const PRODUCTS_REPOSITORY = Symbol('PRODUCTS_REPOSITORY');
+export const GET_ALL_PRODUCTS = Symbol('GET_ALL_PRODUCTS');

@@ -1,0 +1,67 @@
+.card-form {
+  background: var(--surface);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.card-form__title {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.card-form__field {
+  margin-bottom: 1rem;
+}
+
+.card-form__field:last-child {
+  margin-bottom: 0;
+}
+
+.card-form__field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+
+.card-form__input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--bg);
+  color: var(--text);
+  box-sizing: border-box;
+}
+
+.card-form__input::placeholder {
+  color: var(--text-muted);
+}
+
+.card-form__input--error {
+  border-color: var(--error);
+}
+
+.card-form__input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+}
+
+.card-form__error {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--error);
+  margin-top: 0.25rem;
+}
+
+.card-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
