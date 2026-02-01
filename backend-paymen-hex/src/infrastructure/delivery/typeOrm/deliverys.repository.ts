@@ -3,8 +3,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { DeliveryEntity } from "./delivery.entity";
 import { DeliveryInterface, DeliveryRepository } from "src/domain/delivery.repository";
-
-
 @Injectable()
 export class DeliverysRepository implements DeliveryRepository {
   constructor(

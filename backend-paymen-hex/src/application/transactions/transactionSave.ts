@@ -58,9 +58,7 @@ export class TransactionsSave {
             payment_source_id: card.id,
         });
         const validPay = await this.repository.validatePayment(tx.id);
-        console.log('averd', validPay);
         await this.repository.updateTransaction(payloadOfCard.idTransaction, validPay.data.status, tx.id);
-        console.log('aqui anda pros', product);
         await this.productRepository.decrementStock(
             product.id,
             this.stockDecrement,
