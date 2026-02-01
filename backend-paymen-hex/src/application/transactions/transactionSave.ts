@@ -75,8 +75,9 @@ export class TransactionsSave {
 
     async requestPayment(productId: number, idTransaction: number, id: string) {
         const validPay = await this.repository.validatePayment(id);
+        console.log('validPay', validPay.data);
+        await this.repository.updateTransaction(idTransaction, validPay.data.status, id);
         if (validPay.data.status == 'APPROVED') {
-            await this.repository.updateTransaction(idTransaction, validPay.data.status, id);
             await this.productRepository.decrementStock(
                 productId,
                 this.stockDecrement,

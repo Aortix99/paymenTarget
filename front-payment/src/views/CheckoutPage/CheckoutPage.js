@@ -16,6 +16,7 @@ export default {
 
     function goBack() {
       router.push('/')
+      store.dispatch('clearCheckout')
     }
 
     function goToResumen() {

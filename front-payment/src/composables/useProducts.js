@@ -16,7 +16,7 @@ export function useProducts() {
   const canRecover = computed(() => store.getters.canRecoverProgress)
 
   function formatPrice(price) {
-    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(price || 0)
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(price)
   }
 
   function showProductImage(product) {
@@ -34,7 +34,8 @@ export function useProducts() {
     try {
       await store.dispatch('fetchProducts')
     } catch (e) {
-      error.value = e?.message || 'No se pudieron cargar los productos.'
+      console.error(e)
+      error.value = 'No se pudieron cargar los productos.'
       store.dispatch('initProduct')
       store.commit('SET_PRODUCTS', [store.state.product])
     } finally {

@@ -61,9 +61,9 @@ export default createStore({
 
   getters: {
     baseCharge: () => BASE_CHARGE,
-    shippingCost: (state) => (state.product.stock != null ? Math.min(state.product.stock, 5) * SHIPPING_PER_UNIT : 0),
+    shippingCost: (state) => state.product.stock * SHIPPING_PER_UNIT,
     totalAmount: (state, getters) =>
-      (state.product.price || 0) + getters.baseCharge + getters.shippingCost,
+      (state.product.price) + getters.baseCharge + getters.shippingCost,
     canRecoverProgress: (state) =>
       state.transactionId != null ||
       state.transactionStatus != null ||
@@ -97,6 +97,7 @@ export default createStore({
       state.products = list || []
     },
     RESTORE_STATE(state, payload) {
+      console.log('restaurando...', state, payload);
       if (payload.product) state.product = { ...state.product, ...payload.product }
       if (payload.cardForm) state.cardForm = { ...payload.cardForm }
       if (payload.deliveryForm) state.deliveryForm = { ...payload.deliveryForm }

@@ -1,12 +1,14 @@
 import { ProductRepository } from 'src/domain/product.repository';
 import { DeliveryRepository } from 'src/domain/delivery.repository';
-import { Payload, TransactionRepository } from 'src/domain/transactions.repository';
+import { TransactionRepository } from 'src/domain/transactions.repository';
 import { TransactionsSave } from './transactionSave';
+import { CustomerRepository } from 'src/infrastructure/customer/typeOrm/customer.repository';
 
 describe('TransactionsSave', () => {
     let repository: jest.Mocked<TransactionRepository>;
     let deliveryRepository: jest.Mocked<DeliveryRepository>;
     let productRepository: jest.Mocked<ProductRepository>;
+    let customerRepository: jest.Mocked<CustomerRepository>;
     let useCase: TransactionsSave;
 
     beforeEach(() => {
@@ -26,7 +28,7 @@ describe('TransactionsSave', () => {
             findOne: jest.fn(),
         } as jest.Mocked<ProductRepository>;
 
-        useCase = new TransactionsSave(repository, deliveryRepository, productRepository);
+        useCase = new TransactionsSave(repository, deliveryRepository, productRepository, customerRepository);
     });
 
     it('should called transactions: ', async () => {

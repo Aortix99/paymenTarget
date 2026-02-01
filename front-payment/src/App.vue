@@ -11,9 +11,10 @@ onMounted(() => {
 })
 
 watch(
-  () => ({ step: store.state.step, path: router.currentRoute.value.path }),
-  ({ step, path }) => {
-    console.log('observando si cambia', { step, path });
+  () => store.state.step,
+  (step) => {
+    const path = router.currentRoute.value.path
+    console.log('observando si cambia step', { step, path });
     const stepToPath = {
       product: '/',
       checkout: '/checkout',

@@ -50,9 +50,9 @@ export function usePayment() {
           ...delivery
         }
       })
-
       store.commit('SET_TRANSACTION', { id: transactionId, status: 'PENDING' })
       const aut = await api_wompi.tokensAutAcep()
+      console.log('si me pasa el test', aut);
       const token = await api_wompi.tokenCard(payloadOfCard)
       const pagar = {
         validateCard: {
@@ -71,9 +71,10 @@ export function usePayment() {
 
       router.push('/resultado')
     } catch (err) {
+      console.log('quien es err', err);
       errorMessage.value =
-        err?.data?.message || err?.message || 'Error al procesar el pago. Intenta de nuevo.'
-      store.commit('SET_TRANSACTION', { status: 'DECLINED' })
+      'Error al procesar el pago. Intenta de nuevo.'
+        store.commit('SET_TRANSACTION', { status: 'DECLINED' })
       router.push('/resultado')
     } finally {
       loading.value = false
