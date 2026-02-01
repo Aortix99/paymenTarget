@@ -4,7 +4,7 @@ import { TransactionsSave } from "src/application/transactions/transactionSave";
 
 @Controller('transactions')
 export class TransactionsController {
-    constructor(@Inject(CREATE_TRANSACTION) private readonly createTransaction: TransactionsSave) {}
+    constructor(@Inject(CREATE_TRANSACTION) private readonly createTransaction: TransactionsSave) { }
 
     @Post()
     async createTransactionService(@Body() body: CreateTransactionBody) {
@@ -14,11 +14,13 @@ export class TransactionsController {
             body.status,
             body.wompiTransactionId,
             body.productId,
-            body.customerId,
             {
                 country: body.delivery.country,
                 city: body.delivery.city,
                 address: body.delivery.address,
+                fullName: body.delivery.fullName,
+                document: body.delivery.document,
+                email: body.delivery.email,
             }
         );
         return { transactionId };
@@ -37,10 +39,12 @@ interface CreateTransactionBody {
     status: string;
     wompiTransactionId: string;
     productId: number;
-    customerId: number;
     delivery: {
         country: string;
         city: string;
         address: string;
+        fullName: string;
+        document: string;
+        email: string;
     };
 }   

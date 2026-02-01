@@ -7,7 +7,11 @@ function createTestStore() {
     products: [],
     product: { id: null, name: '', description: '', price: 0, stock: 0, img: '' },
     cardForm: { number: '', holder: '', expiry: '', cvc: '' },
-    deliveryForm: { fullName: '', address: '', city: '', phone: '', email: '' },
+    deliveryForm: {
+      country: '',
+      city: '',
+      address: '',
+    },
     transactionId: null,
     transactionStatus: null,
     step: 'product',
@@ -19,7 +23,7 @@ function createTestStore() {
     canRecoverProgress: (s) =>
       s.transactionId != null ||
       s.transactionStatus != null ||
-      (s.cardForm.number && s.deliveryForm.fullName),
+      (s.cardForm.number && s.deliveryForm.country),
     cardBrand: (s) => {
       const n = (s.cardForm.number || '').replace(/\s/g, '')
       if (/^4/.test(n)) return 'visa'

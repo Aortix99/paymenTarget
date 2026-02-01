@@ -6,6 +6,7 @@ import { ProductsEntity } from './infrastructure/product/typeOrm/products.entity
 import { TransactionsModule } from './infrastructure/transactions/nestJs/transactions.module';
 import { TransactionsEntity } from './infrastructure/transactions/typeOrm/transactions.entity';
 import { DeliveryEntity } from './infrastructure/delivery/typeOrm/delivery.entity';
+import { CustomerEntity } from './infrastructure/customer/typeOrm/customer.entity';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { DeliveryEntity } from './infrastructure/delivery/typeOrm/delivery.entit
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      entities: [ProductsEntity, TransactionsEntity, DeliveryEntity],
+      entities: [ProductsEntity, TransactionsEntity, DeliveryEntity, CustomerEntity],
       synchronize: true,
     }),
     ProductModule,

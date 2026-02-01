@@ -22,7 +22,7 @@ export default {
 
     onMounted(() => {
       initStep()
-      if (products.value.length === 0) loadProducts()
+      loadProducts()
     })
 
     return {

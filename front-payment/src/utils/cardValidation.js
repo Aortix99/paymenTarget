@@ -82,10 +82,13 @@ export function validateCardForm({ number, holder, expiry, cvc }) {
   return errors
 }
 
-export function validateDeliveryForm({ address, city, country }) {
+export function validateDeliveryForm({ address, city, country, email, fullName, document }) {
   const errors = {}
   if (!(address || '').trim()) errors.address = 'Dirección requerida'
   if (!(city || '').trim()) errors.city = 'Ciudad requerida'
   if (!(country || '').trim()) errors.country = 'País requerido'
+  if (!(email || '').trim() || !/\S+@\S+\.\S+/.test(email)) errors.email = 'Correo inválido'
+  if (!(fullName || '').trim()) errors.fullName = 'Nombre completo requerido'
+  if (!(document || '').trim()) errors.document = 'Documento requerido'
   return errors
 }

@@ -6,4 +6,5 @@ export interface DeliveryInterface {
     address: string;
     city: string;
     country: string;
+    fullName?: string;
 }

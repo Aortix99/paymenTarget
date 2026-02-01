@@ -3,19 +3,19 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { TransactionsEntity } from "../typeOrm/transactions.entity";
 import { DeliveryEntity } from "src/infrastructure/delivery/typeOrm/delivery.entity";
 import { DeliverysRepository } from "src/infrastructure/delivery/typeOrm/deliverys.repository";
-import { CREATE_TRANSACTION, DELIVERY_REPOSITORY, TRANSACTIONS_REPOSITORY, WEBHOOK_HANDLER } from "./tokens";
+import { CREATE_TRANSACTION, CUSTOMER_REPOSITORY, DELIVERY_REPOSITORY, TRANSACTIONS_REPOSITORY } from "./tokens";
 import { TransactionsController } from "./transactions.controller";
-import { WebhookController } from "./webhook.controller";
 import { TransactionsSave } from "src/application/transactions/transactionSave";
-// import { HandleWompiWebhook } from "src/application/webhooks/handleWompiWebhook";
 import { TypeOrmTransactionsRepository } from "../typeOrm/transactions.repository";
 import { ProductModule } from "src/infrastructure/product/nestJs/product.module";
 import { PRODUCTS_REPOSITORY } from "src/infrastructure/product/nestJs/tokens";
 import { ProductRepository } from "src/domain/product.repository";
+import { CustomerRepository } from "src/infrastructure/customer/typeOrm/customer.repository";
+import { CustomerEntity } from "src/infrastructure/customer/typeOrm/customer.entity";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TransactionsEntity, DeliveryEntity]), ProductModule],
-  controllers: [TransactionsController, WebhookController],
+  imports: [TypeOrmModule.forFeature([TransactionsEntity, DeliveryEntity, CustomerEntity]), ProductModule],
+  controllers: [TransactionsController],
   providers: [
     {
       provide: TRANSACTIONS_REPOSITORY,
@@ -26,22 +26,19 @@ import { ProductRepository } from "src/domain/product.repository";
       useClass: DeliverysRepository,
     },
     {
+      provide: CUSTOMER_REPOSITORY,
+      useClass: CustomerRepository,
+    },
+    {
       provide: CREATE_TRANSACTION,
       useFactory: (
         transactionsRepository: TypeOrmTransactionsRepository,
         deliveryRepository: DeliverysRepository,
         productRepository: ProductRepository,
-      ) => new TransactionsSave(transactionsRepository, deliveryRepository, productRepository),
-      inject: [TRANSACTIONS_REPOSITORY, DELIVERY_REPOSITORY, PRODUCTS_REPOSITORY],
+        customerRepository: CustomerRepository,
+      ) => new TransactionsSave(transactionsRepository, deliveryRepository, productRepository, customerRepository),
+      inject: [TRANSACTIONS_REPOSITORY, DELIVERY_REPOSITORY, PRODUCTS_REPOSITORY, CUSTOMER_REPOSITORY],
     },
-    // {
-    //   provide: WEBHOOK_HANDLER,
-    //   useFactory: (
-    //     transactionsRepository: TypeOrmTransactionsRepository,
-    //     productRepository: import("src/domain/product.repository").ProductRepository,
-    //   ) => new HandleWompiWebhook(transactionsRepository, productRepository),
-    //   inject: [TRANSACTIONS_REPOSITORY, PRODUCTS_REPOSITORY],
-    // },
   ],
 })
-export class TransactionsModule {}
+export class TransactionsModule { }

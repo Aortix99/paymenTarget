@@ -2,11 +2,15 @@ import { TransactionRepository, RequestTransaction, Payload, ResponseTransaction
 import { DeliveryRepository, DeliveryInterface } from "src/domain/delivery.repository";
 import * as crypto from 'node:crypto';
 import { ProductRepository } from "src/domain/product.repository";
+import { CustomersRepository } from "src/domain/customer.repository";
 
 export interface DeliveryData {
     country: string;
     city: string;
     address: string;
+    fullName: string;
+    document: string;
+    email: string;
 }
 const STOCK_DECREMENT = 1;
 export class TransactionsSave {
@@ -14,6 +18,7 @@ export class TransactionsSave {
         private readonly repository: TransactionRepository,
         private readonly deliveryRepository: DeliveryRepository,
         private readonly productRepository: ProductRepository,
+        private readonly customerRepository: CustomersRepository,
         // private readonly baseUrl = 'https://api-sandbox.co.uat.wompi.dev/v1'
     ) { }
     private readonly stockDecrement: number = STOCK_DECREMENT;
@@ -24,16 +29,21 @@ export class TransactionsSave {
         status: string,
         wompiTransactionId: string,
         productId: number,
-        customerId: number,
         delivery: DeliveryData
     ): Promise<number> {
+        const customerExists = await this.customerRepository.findByDocument(delivery.document);
+        // if (customerExists) delivery.document = customerExists.document;
         const deliveryPayload: DeliveryInterface = {
             country: delivery.country,
             city: delivery.city,
             address: delivery.address,
         };
         const deliveryId = await this.deliveryRepository.saveDelivery(deliveryPayload);
-
+        const customerId = customerExists ? customerExists.id : await this.customerRepository.saveCustomer({
+            fullName: delivery.fullName,
+            document: delivery.document,
+            email: delivery.email,
+        });
         const payload: RequestTransaction = {
             reference,
             amount,
@@ -43,41 +53,37 @@ export class TransactionsSave {
             customerId,
             deliveryId,
         };
+
         return this.repository.saveTransaction(payload);
     }
 
     async validateCard(payloadOfCard: Payload): Promise<ResponseTransactionsCard> {
-        console.log('#1');
         const product = await this.productRepository.findOne(payloadOfCard.idPrroduct);
         if (!product) throw new Error('Producto agotado');
-        console.log('#2');
         const card = await this.repository.validateCard(payloadOfCard);
-        console.log('#3');
-        
+
         const tx = await this.repository.transactions({
             amount: payloadOfCard.amount,
             idTransaction: payloadOfCard.idTransaction,
             customer_email: card.customer_email,
             payment_source_id: card.id,
         });
-        console.log('#4');
         await new Promise(resolve => setTimeout(resolve, 2000));
-        console.log('#5');
-        const validPay = await this.repository.validatePayment(tx.id);
-        console.log('#6', validPay);
+        const response = await this.requestPayment(product.id, payloadOfCard.idTransaction, tx.id);
+        return response;
+    }
+
+    async requestPayment(productId: number, idTransaction: number, id: string) {
+        const validPay = await this.repository.validatePayment(id);
         if (validPay.data.status == 'APPROVED') {
-            console.log('averd', validPay);
-            await this.repository.updateTransaction(payloadOfCard.idTransaction, validPay.data.status, tx.id);
-            console.log('aqui anda pros', product);
+            await this.repository.updateTransaction(idTransaction, validPay.data.status, id);
             await this.productRepository.decrementStock(
-                product.id,
+                productId,
                 this.stockDecrement,
             );
         }
         return validPay.data;
     }
-
-
 
     generateSignature(reference: string, amount: number, currency = 'COP') {
         const payload = `${reference}${amount}${currency}${process.env.INTEGIT_KEY}`;

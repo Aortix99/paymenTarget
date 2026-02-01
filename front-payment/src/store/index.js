@@ -17,15 +17,15 @@ function loadState() {
 // intentamos guardar status xd
 function saveState(state) {
   // try {
-    const toSave = {
-      product: state.product,
-      cardForm: state.cardForm,
-      deliveryForm: state.deliveryForm,
-      transactionId: state.transactionId,
-      transactionStatus: state.transactionStatus,
-      step: state.step,
-    }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave))
+  const toSave = {
+    product: state.product,
+    cardForm: state.cardForm,
+    deliveryForm: state.deliveryForm,
+    transactionId: state.transactionId,
+    transactionStatus: state.transactionStatus,
+    step: state.step,
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave))
   // } catch (_) {}
 }
 
@@ -47,15 +47,16 @@ export default createStore({
       cvc: '',
     },
     deliveryForm: {
-      fullName: '',
-      address: '',
+      country: '',
       city: '',
-      phone: '',
-      email: '',
+      address: '',
+      fullName: '',
+      document: '',
+      email: ''
     },
     transactionId: null,
-    transactionStatus: null, // 'PENDING' | 'APPROVED' | 'DECLINED' | null
-    step: 'product', // 'product' | 'checkout' | 'resumen' | 'resultado'
+    transactionStatus: null,
+    step: 'product',
   },
 
   getters: {
@@ -66,10 +67,10 @@ export default createStore({
     canRecoverProgress: (state) =>
       state.transactionId != null ||
       state.transactionStatus != null ||
-      (state.cardForm.number && state.deliveryForm.fullName),
+      (state.cardForm.number),
     cardBrand: (state) => {
       const n = (state.cardForm.number || '').replace(/\s/g, '')
-      if (/^4/.test(n)) return 'visa'  // qwue me diferencia una visa de una mastercard
+      if (/^4/.test(n)) return 'visa'  // que me diferencia una visa de una mastercard
       if (/^5[1-5]/.test(n) || /^2[2-7]/.test(n)) return 'mastercard'
       return null
     },
@@ -77,8 +78,6 @@ export default createStore({
 
   mutations: {
     SET_PRODUCT(state, payload) {
-       console.log('ver el status...', state);
-      console.log('restaurando...', payload);
       state.product = { ...state.product, ...payload }
     },
     SET_CARD_FORM(state, payload) {
@@ -98,8 +97,6 @@ export default createStore({
       state.products = list || []
     },
     RESTORE_STATE(state, payload) {
-      console.log('ver el...', payload);
-      console.log('restaurando...', payload);
       if (payload.product) state.product = { ...state.product, ...payload.product }
       if (payload.cardForm) state.cardForm = { ...payload.cardForm }
       if (payload.deliveryForm) state.deliveryForm = { ...payload.deliveryForm }
@@ -109,7 +106,7 @@ export default createStore({
     },
     CLEAR_CHECKOUT(state) {
       state.cardForm = { number: '', holder: '', expiry: '', cvc: '' }
-      state.deliveryForm = { fullName: '', address: '', city: '', phone: '', email: '' }
+      state.deliveryForm = { country: '', city: '', address: '', fullName: '', document: '', email: '' }
       state.transactionId = null
       state.transactionStatus = null
       state.step = 'product'
@@ -159,5 +156,5 @@ export default createStore({
   ],
 })
 // await this.$store.dispatch('clearCheckout')
- 
+
 
